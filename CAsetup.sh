@@ -22,17 +22,16 @@ cd ../../..
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo 'add some CA related validation scripts'
-cd Validation/RecoTrack/test
-cp $DIR/Validation/RecoTrack/test/dummyTestLight_cfg.py Validation/RecoTrack/test/
-cp $DIR/Validation/RecoTrack/test/MultiTrackValidatorForCA_cfg.py Validation/RecoTrack/test/
+cp $DIR/src/Validation/RecoTrack/test/dummyTestLight_cfg.py Validation/RecoTrack/test/
+cp $DIR/src/Validation/RecoTrack/test/MultiTrackValidatorForCA_cfg.py Validation/RecoTrack/test/
 echo 'make some changes in SeedingHitSet.h'
-cp $DIR/RecoTracker/TkSeedingLayers/interface/SeedingHitSet.h RecoTracker/TkSeedingLayers/interface/
+cp $DIR/src/RecoTracker/TkSeedingLayers/interface/SeedingHitSet.h RecoTracker/TkSeedingLayers/interface/
 echo 'make some changes in HitExtractorSTRP'
-cp $DIR/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.h /RecoTracker/TkSeedingLayers/src/
-cp $DIR/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc /RecoTracker/TkSeedingLayers/src/
+cp $DIR/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.h /RecoTracker/TkSeedingLayers/src/
+cp $DIR/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc /RecoTracker/TkSeedingLayers/src/
 
 echo 'Copying CA code'
-cp -r $DIR/RecoTracker/CAtracker/ RecoTracker/CAtracker/
+cp -r $DIR/src/RecoTracker/CAtracker/ RecoTracker/CAtracker/
 
 echo 'building the code'
 scram b
