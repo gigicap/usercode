@@ -27,8 +27,8 @@ cp ../../CAcode/src/Validation/RecoTrack/test/MultiTrackValidatorForCA_cfg.py Va
 echo 'make some changes in SeedingHitSet.h'
 cp ../../CAcode/src/RecoTracker/TkSeedingLayers/interface/SeedingHitSet.h RecoTracker/TkSeedingLayers/interface/SeedingHitSet.h
 echo 'make some changes in HitExtractorSTRP'
-cp ../../CAcode/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.h /RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.h
-cp ../../CAcode/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc /RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc
+cp ../../CAcode/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.h RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.h
+cp ../../CAcode/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc
 
 echo 'Copying CA code'
 cp -r ../../CAcode/src/RecoTracker/CAtracker/ RecoTracker/CAtracker/
