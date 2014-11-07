@@ -148,9 +148,11 @@ class CAHitsGenerator : public MultiHitGenerator {
         std::vector<CAcell *> ListIntersect(std::list<CAcell *>, std::list<CAcell *>);
 	//Used to give a unique Id to every hit
         unsigned int OmniRef(const BaseTrackerRecHit*);
+        //Delta eta
         double DeltaEta(GlobalPoint, GlobalPoint);
+        //avoid duplicates
         bool IsValidSeq(int seq);
-
+		int IsAtLeft(int identif);
 
    
     

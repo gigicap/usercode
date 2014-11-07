@@ -89,11 +89,11 @@ process.CASeedingStep = process.GlobalSeedsFromMultiplets.clone(
 )
 
 #import RecoTracker.CAtracker.BarrelPentuplets_cfi
-import RecoTracker.CAtracker.CAPentuplets_cfi
-#import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
+#import RecoTracker.CAtracker.CAPentuplets_cfi
+import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
 
-process.PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsC_pos.clone()
-#process.PentupletLayers = RecoTracker.CAtracker.CAPentupletsAllLay_cfi.CAPentuplets.clone()
+process.PentupletLayers = RecoTracker.CAtracker.CAPentupletsAllLay_cfi.CAPentupletsAL.clone()
+#process.PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsA.clone()
 
 process.CASeedingStep.OrderedHitsFactoryPSet.SeedingLayers = 'PentupletLayers'
 

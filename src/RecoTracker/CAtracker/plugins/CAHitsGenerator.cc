@@ -173,7 +173,7 @@ void CAHitsGenerator::hitSets(const TrackingRegion& region, OrderedMultiHits & r
 
     for (size_t is = 0; is<scoll->size(); is++) {
         CAcellGenerator(builder, (*scoll)[is], is);
-            if (m_debug > 1)  std::cout << "Cells have been generated " << std::endl;
+        //    if (m_debug > 2)  std::cout << "Cells have been generated " << std::endl;
         
         hitUsage[tripletCollection[is].rawId0].push_back(&tripletCollection[is]);
         hitUsage[tripletCollection[is].rawId1].push_back(&tripletCollection[is]);
@@ -216,24 +216,28 @@ for (size_t it = 0; it<tripletCollection.size(); it++) {
     std::cout<<"list_h1 size == "<<list_h1.size()<<std::endl;
     std::cout<<"list_h2 size == "<<list_h2.size()<<std::endl;
 	std::cout<<"----------------------------------"<<std::endl;
-   std::cout<<"j_list01 size == "<<j_list01.size()<<std::endl;
-   std::cout<<"j_list12 size == "<<j_list12.size()<<std::endl;
+    std::cout<<"j_list01 size == "<<j_list01.size()<<std::endl;
+    std::cout<<"j_list12 size == "<<j_list12.size()<<std::endl;
     
     }
 
 
      for (size_t il = 0; il<j_list01.size(); il++){
-         if((j_list01[il] != &tripletCollection[it]) && (j_list01[il]->tripletIdentifier != tripletCollection[it].tripletIdentifier) && fabs(j_list01[il]->dEta - tripletCollection[it].dEta)< dEta_cut)
+     	//added to avoid duplicates in layer superimpositions
+     	if((j_list01[il] != &tripletCollection[it]) && (j_list01[il]->tripletIdentifier == IsAtLeft(tripletCollection[it].tripletIdentifier))){ 		
+         if((j_list01[il]->tripletIdentifier != tripletCollection[it].tripletIdentifier) && fabs(j_list01[il]->dEta - tripletCollection[it].dEta)< dEta_cut)
              tripletCollection[it].left_neighbors.push_back(j_list01[il]);
+     	}
      }
     
     
-    for (size_t il = 0; il<j_list12.size(); il++){
+    for (size_t il = 0; il<j_list12.size(); il++){  
+    	//Do I also have to add a IsAtRight function (more complicated)? 
         if(j_list12[il] != &tripletCollection[it] && (j_list12[il]->tripletIdentifier != tripletCollection[it].tripletIdentifier) && fabs(j_list12[il]->dEta - tripletCollection[it].dEta)< dEta_cut)
             tripletCollection[it].right_neighbors.push_back(j_list12[il]);
     }
     
-    if (m_debug > 2 ){ 
+    if (m_debug > 4 ){ 
     std::cout<<"left_list size == "<<tripletCollection[it].left_neighbors.size()<<std::endl;
     std::cout<<"right_list size == "<<tripletCollection[it].right_neighbors.size()<<std::endl;
     }
@@ -296,6 +300,9 @@ for (size_t it = 0; it<tripletCollection.size(); it++) {
     int n_fiter = -1;
     n_fiter = ForwardCA();
     
+    if (m_debug > 1) std::cout<<" -- > ForwardCA done!"<<std::endl;
+    
+    
     //for time measurements (developer version)
 //if (m_debug > 2){
     auto t_caforward_end = std::chrono::system_clock::now();
@@ -304,6 +311,9 @@ for (size_t it = 0; it<tripletCollection.size(); it++) {
 //}
 //Connect triplets into multiplets Backward CA
     BackwardCA();
+    
+        if (m_debug > 1) std::cout<<" -- > BackwardCA done!"<<std::endl;
+
     
 //for time measurements (developer version)
 //if (m_debug > 2){
@@ -330,6 +340,10 @@ for(size_t im = 0; im < multiplets.size(); im++){
 			penteta.push_back(pl_eta);
 	}
 }
+
+
+        if (m_debug > 1) std::cout<<" -- > Multiset done!"<<std::endl;
+
 
 //fill the penteta tree
 if(m_tree){ 
@@ -428,7 +442,7 @@ eventcounter++;
 
 void CAHitsGenerator::CAcellGenerator(edm::ESHandle<TransientTrackingRecHitBuilder> & builder, SeedingHitSet sset,  int seednumber){
     //Build the CA cells, i.e. triplets (objects containing RecHits and fit parameters
-        if (m_debug>2) std::cout << " building a ca cell "<< std::endl;
+       // if (m_debug>2) std::cout << " building a ca cell "<< std::endl;
 
    	CAcell trip;
     //translate hits into a SeedingHitSet
@@ -442,14 +456,14 @@ void CAHitsGenerator::CAcellGenerator(edm::ESHandle<TransientTrackingRecHitBuild
     	i++;
     }
       
-   if (m_debug>2) std::cout << " starting triplet size:  "<<starting_triplet.size()<< std::endl;
+   //if (m_debug>2) std::cout << " starting triplet size:  "<<starting_triplet.size()<< std::endl;
 
     
 	trip.hits = starting_triplet;
     
     //TrackinkgRecHits for fast Id access
     
-    if (m_debug>2) std::cout << " setting hi0/1/2 "<< std::endl;
+    //if (m_debug>2) std::cout << " setting hi0/1/2 "<< std::endl;
     
     //const TrackingRecHit* hi0 = sset[0]->hit();
     //const TrackingRecHit* hi1 = sset[1]->hit();
@@ -473,20 +487,20 @@ void CAHitsGenerator::CAcellGenerator(edm::ESHandle<TransientTrackingRecHitBuild
     unsigned int sdidout =hi2->geographicalId().subdetId();
     std::cout<<"subdetids = "<<sdidout<<std::endl;*/
     
-      if (m_debug>2) std::cout << " setting rawId's "<< std::endl;
+     // if (m_debug>2) std::cout << " setting rawId's "<< std::endl;
 
       trip.rawId0 = OmniRef(hi0);
       trip.rawId1 = OmniRef(hi1);
       trip.rawId2 = OmniRef(hi2);
 
-      if (m_debug>2) std::cout << " setting global points / 1"<< std::endl;
+     // if (m_debug>2) std::cout << " setting global points / 1"<< std::endl;
 
 
     GlobalPoint p0 = hi0->globalPosition();
     GlobalPoint p1 = hi1->globalPosition();
     GlobalPoint p2 = hi2->globalPosition();
     
-          if (m_debug>2) std::cout << " setting global points / 2"<< std::endl;
+      //    if (m_debug>2) std::cout << " setting global points / 2"<< std::endl;
 
 
     trip.p0 = p0;	
@@ -495,7 +509,7 @@ void CAHitsGenerator::CAcellGenerator(edm::ESHandle<TransientTrackingRecHitBuild
 
     trip.dEta = DeltaEta(p0,p2);
     
-          if (m_debug>2) std::cout << " setting detId's "<< std::endl;
+      //    if (m_debug>2) std::cout << " setting detId's "<< std::endl;
 
     
     DetIDClassification hit0cl(hi0->geographicalId());
@@ -510,7 +524,7 @@ void CAHitsGenerator::CAcellGenerator(edm::ESHandle<TransientTrackingRecHitBuild
     trip.tripletIdentifier = trip.hitId0+10*trip.hitId1+100*trip.hitId2;
 
     
-    if (m_debug>2) {
+    if (m_debug>4) {
         std::cout << " layer 0 =  " << trip.hitId0 << std::endl;
         std::cout << " layer 1 =  " << trip.hitId1 << std::endl;
         std::cout << " layer 2 =  " << trip.hitId2 << std::endl;
@@ -564,46 +578,56 @@ int CAHitsGenerator::ForwardCA(){
     
     int it_max = 20; //Maximum number of iteraitons
         
-    while (Stop < (int)fittedTripletCollection.size() && step_iterator<it_max) {
-        
+    while (Stop < (int)fittedTripletCollection.size() && step_iterator<it_max) { 
         step_iterator++;
         Stop = 0;
         
         
         for (size_t t =0; t<fittedTripletCollection.size(); t++) {
-            //std::cout<<" ________ "<<std::endl;
-            //std::cout<<"triplet no. "<<t<<std::endl;
+            
             if (fittedTripletCollection[t]->left_neighbors.size()!=0) {
-                for (size_t il = 0; il<fittedTripletCollection[t]->left_neighbors.size(); il++) {
-                    bool en_cont = false;   //useful variable
-			if(m_debug > 2){
-                    	std::cout<<"neighbor list no = "<<il<<std::endl;
-                    	std::cout<<"fittedTriplet status = "<<fittedTripletCollection[t]->CAstatus<<"left_neighbors status = "<<fittedTripletCollection[t]->left_neighbors[il]->CAstatus <<std::endl;
-			}
+               bool en_cont = false;                       //useful variable - moved from 2 lines behind 
+               for (size_t il = 0; il<fittedTripletCollection[t]->left_neighbors.size(); il++) {
                     if (fittedTripletCollection[t]->CAstatus <= fittedTripletCollection[t]->left_neighbors[il]->CAstatus && en_cont == false){
-                        (fittedTripletCollection[t]->CAstatus)++;
-                        en_cont = true;
-                    }
-                if (en_cont == false)
-                    Stop++;
-                
+                        	(fittedTripletCollection[t]->CAstatus)++;
+                      	 	en_cont = true;
+                      	 	//break;
+                    			}
+                		//if (en_cont == false)   Stop++;    
                 }
-              
+                if (en_cont == false)  Stop++;  //moved here? 
             }
-            else
-                Stop++;
-        }
+            else  Stop++;		//i.e. if fittedTripletCollection[t] does not have left neighbors
+            
+        }   //end of loop on triplets      
         
-        //std::cout<<"Stop value = "<<Stop<<std::endl;
-    }
+    }		//end of while
     
     //debug
 if(m_debug>2){
     for (size_t t =0; t<fittedTripletCollection.size(); t++) {
         std::cout<<" ._._._._._._._._ "<<std::endl;
         std::cout<<" cell number "<<t<<std::endl;
+        std::cout<<" has = "<<fittedTripletCollection[t]->IsNeighborly<<" neighbors. Is in lays: "<<fittedTripletCollection[t]->tripletIdentifier<<std::endl;
+        std::cout<<"left_list size == "<<fittedTripletCollection[t]->left_neighbors.size()<<std::endl;
+       	std::cout<<"left neighbours (Id, eta) == {";
+        for(size_t k=0; k< fittedTripletCollection[t]->left_neighbors.size(); k++){
+        	std::cout<<"(";
+        	std::cout<<(fittedTripletCollection[t]->left_neighbors[k])->tripletIdentifier;
+        	std::cout<<(fittedTripletCollection[t]->left_neighbors[k])->dEta;        	
+        	std::cout<<"),";
+        }
+        std::cout<<"}"<<std::endl;
+    	std::cout<<"right_list size == "<<fittedTripletCollection[t]->right_neighbors.size()<<std::endl;
+    	std::cout<<"right neighbours (Id, eta) == {";
+        for(size_t k=0; k< fittedTripletCollection[t]->right_neighbors.size(); k++){
+        	std::cout<<"(";
+        	std::cout<<(fittedTripletCollection[t]->right_neighbors[k])->tripletIdentifier;
+        	std::cout<<(fittedTripletCollection[t]->right_neighbors[k])->dEta;        	
+        	std::cout<<"),";
+        }
+        std::cout<<"}"<<std::endl;
         std::cout<<" processed with status: "<<fittedTripletCollection[t]->CAstatus<<std::endl;
-        
     }
     }
     
@@ -620,7 +644,8 @@ int multi_id = 1;
 
 for (size_t t =0; t<fittedTripletCollection.size(); t++) {
 //start only with non-used triplets with maximum CAstatus
-if(fittedTripletCollection[t]->CAstatus >= max_status && fittedTripletCollection[t]->IsUsed==0){
+if (m_debug > 2) std::cout<<"Processing triplet no. "<<t<<" for the backwardCA"<<std::endl;
+if(fittedTripletCollection[t]->CAstatus == max_status && fittedTripletCollection[t]->IsUsed==0){
 	CAcell *current_cell = fittedTripletCollection[t];
 	//TransientTrackingRecHit::RecHitContainer multicontainer;
 	std::vector<ConstRecHitPointer> multicontainer;
@@ -628,6 +653,7 @@ if(fittedTripletCollection[t]->CAstatus >= max_status && fittedTripletCollection
 		current_cell = define_used(current_cell, multi_id, &multicontainer);
 		}
 		multi_id++;	
+	if (m_debug > 2) std::cout<<"Multicontainer size =  "<<multicontainer.size()<<std::endl;
 	multiplets.push_back(multicontainer);
 	multicontainer.clear();
 	}
@@ -857,4 +883,46 @@ bool CAHitsGenerator::IsValidSeq(int seq){
 		return true;	
 }
 
+//check is two triplets can be left-right joined 
+//NB: It should be changed anlytime the Layer configuration is changed (This works for A-C-D)
+int CAHitsGenerator::IsAtLeft(int identif){
+	int ret_val = 0;
+	switch (identif){
+		case 321:
+			ret_val = 0;
+			break;
+		case 432:
+			ret_val = 321;
+			break;
+		case 543:
+			ret_val = 432;
+			break;
+		case 10132:
+			ret_val = 321;
+			break;
+		case 10343:
+			ret_val = 432;
+			break;
+		case 11313:
+			ret_val = 10132;
+			break;
+		case -10068:
+			ret_val = 321;
+			break;
+		case -10257:
+			ret_val = 432;
+			break;
+		case -11307:
+			ret_val = -10068;
+			break;
+		default:
+			std::cout<<"WARNING: triplet Id not recognized!"<<std::endl;	
+			ret_val = -1;
+			break;			
+	}
+	return ret_val;
+}
+
+
 //that's all folks!!!
+
