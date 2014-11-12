@@ -186,7 +186,52 @@ TID = cms.PSet(
          matchedRecHits = cms.InputTag("siStripMatchedRecHits","matchedRecHit"),
          useRingSlector = cms.bool(True),
          TTRHBuilder = cms.string('WithTrackAngle'),
-         maxRing = cms.int32(1),
+         maxRing = cms.int32(2),
+         minRing = cms.int32(1),
+)
+)
+
+
+CAPentupletsD_pos = seedingLayersEDProducer.clone(
+layerList = cms.vstring('BPix1+BPix2+BPix3',
+			'BPix2+BPix3+FPix1_pos',
+			'BPix3+FPix1_pos+TID1_pos'
+),
+BPix = cms.PSet(
+        TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets'),
+        HitProducer = cms.string('siPixelRecHits')
+),
+FPix = cms.PSet(
+        TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets'),
+        HitProducer = cms.string('siPixelRecHits')
+),
+TID = cms.PSet(
+         matchedRecHits = cms.InputTag("siStripMatchedRecHits","matchedRecHit"),
+         useRingSlector = cms.bool(True),
+         TTRHBuilder = cms.string('WithTrackAngle'),
+         maxRing = cms.int32(2),
+         minRing = cms.int32(1),
+)
+)
+
+CAPentupletsD_neg = seedingLayersEDProducer.clone(
+layerList = cms.vstring('BPix1+BPix2+BPix3',
+			'BPix2+BPix3+FPix1_neg',
+			'BPix3+FPix1_neg+TID1_neg'
+),
+BPix = cms.PSet(
+        TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets'),
+        HitProducer = cms.string('siPixelRecHits')
+),
+FPix = cms.PSet(
+        TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets'),
+        HitProducer = cms.string('siPixelRecHits')
+),
+TID = cms.PSet(
+         matchedRecHits = cms.InputTag("siStripMatchedRecHits","matchedRecHit"),
+         useRingSlector = cms.bool(True),
+         TTRHBuilder = cms.string('WithTrackAngle'),
+         maxRing = cms.int32(2),
          minRing = cms.int32(1),
 )
 )
@@ -257,9 +302,16 @@ layerList = cms.vstring(
 			'BPix2+BPix3+FPix1_neg',
 			'BPix3+TIB1+TIB2',
 			'BPix3+CTIB1+CTID1_pos',
-	        'BPix3+CTIB1+CTID1_neg',
+		    'BPix3+CTIB1+CTID1_neg',
 			'BPix3+FPix1_pos+TID1_pos',
-			'BPix3+FPix1_neg+TID1_neg'
+			'BPix3+FPix1_neg+TID1_neg',
+			#try to add also the B layers ... 
+			'BPix1+BPix2+FPix1_pos',
+             'BPix1+BPix2+FPix1_neg',
+             'BPix2+FPix1_pos+TID1_pos',
+             'BPix2+FPix1_neg+TID1_neg',
+             'FPix1_pos+TID1_pos+TID2_pos',
+             'FPix1_neg+TID1_neg+TID2_neg'
 			),
 BPix = cms.PSet(
         TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets'),
@@ -289,7 +341,7 @@ TID = cms.PSet(
          matchedRecHits = cms.InputTag("siStripMatchedRecHits","matchedRecHit"),
          useRingSlector = cms.bool(True),
          TTRHBuilder = cms.string('WithTrackAngle'),
-         maxRing = cms.int32(1),
+         maxRing = cms.int32(2),
          minRing = cms.int32(1)
 )
 )

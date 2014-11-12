@@ -12,8 +12,9 @@ from RecoTracker.TransientTrackingRecHit.TTRHBuilders_cff import *
 
 #import seeding layers
 #import RecoTracker.CAtracker.BarrelPentuplets_cfi
-import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
-PentupletLayers = RecoTracker.CAtracker.CAPentupletsAllLay_cfi.CAPentuplets.clone()
+#import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
+import RecoTracker.CAtracker.CAPentuplets_cfi
+PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsAllLay.clone()
 
 from RecoTracker.TkTrackingRegions.GlobalTrackingRegionFromBeamSpot_cfi import RegionPsetFomBeamSpotBlock
 from RecoTracker.CAtracker.GlobalSeedsFromMultiplets_cff import *

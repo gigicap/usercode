@@ -162,7 +162,7 @@ void CAHitsGenerator::hitSets(const TrackingRegion& region, OrderedMultiHits & r
     
     tripletCollection.reserve(scoll->size());
     fittedTripletCollection.reserve(scoll->size());
-    resultCA.reserve(scoll->size());
+    //resultCA.reserve(scoll->size());
 
     
     auto t_triplets_end = std::chrono::system_clock::now();
@@ -433,7 +433,7 @@ std::cout<<"================================"<<std::endl;
 
     multiplets.clear();
 	//std::vector<TransientTrackingRecHit::RecHitContainer>().swap(multiplets);
-        resultCA.clear();
+        //resultCA.clear();
 	penteta.clear();
 
 eventcounter++;
@@ -884,11 +884,17 @@ bool CAHitsGenerator::IsValidSeq(int seq){
 }
 
 //check is two triplets can be left-right joined 
-//NB: It should be changed anlytime the Layer configuration is changed (This works for A-C-D)
+//NB: It should be changed anlytime the Layer configuration is changed (This works for A-B-C-D)
 int CAHitsGenerator::IsAtLeft(int identif){
 	int ret_val = 0;
 	switch (identif){
 		case 321:
+			ret_val = 0;
+			break;
+		case 10121:
+			ret_val = 0;
+			break;
+		case -10079:
 			ret_val = 0;
 			break;
 		case 432:
@@ -915,8 +921,20 @@ int CAHitsGenerator::IsAtLeft(int identif){
 		case -11307:
 			ret_val = -10068;
 			break;
+		case 11312:
+			ret_val = 10121;
+			break;
+		case -11308:
+			ret_val = -10079;
+			break;
+		case 11531:
+			ret_val = 11312;
+			break;
+		case -11531:
+			ret_val = -11308;
+			break;
 		default:
-			std::cout<<"WARNING: triplet Id not recognized!"<<std::endl;	
+			std::cout<<"WARNING: triplet Id: "<<identif<<" not recognized!"<<std::endl;	
 			ret_val = -1;
 			break;			
 	}

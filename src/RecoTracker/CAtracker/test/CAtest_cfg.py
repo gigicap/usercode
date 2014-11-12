@@ -33,16 +33,19 @@ source = cms.Source ("PoolSource",fileNames = readFiles)
 			
 
 readFiles.extend( [
-       '/store/relval/CMSSW_7_2_0_pre1/RelValTTbar_13/GEN-SIM-RECO/POSTLS172_V1_frozenHLT-v1/00000/1238364B-B200-E411-84FC-002618943985.root',
-      '/store/relval/CMSSW_7_2_0_pre1/RelValTTbar_13/GEN-SIM-RECO/POSTLS172_V1_frozenHLT-v1/00000/86D7097E-BB00-E411-8BF6-00261894391F.root',
-       '/store/relval/CMSSW_7_2_0_pre1/RelValTTbar_13/GEN-SIM-RECO/POSTLS172_V1_frozenHLT-v1/00000/A6E543D6-C800-E411-9FF4-0026189438F7.root' ] );
+     '/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/42783A1F-1550-E411-B888-0025905B8582.root',
+'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/A233AB64-0C50-E411-A954-0025905A60A0.root',
+'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/C60B9C19-1550-E411-8517-002618FDA248.root',
+'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/DCA629A7-0C50-E411-9AC6-002618943849.root',
+'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/F20A822B-0B50-E411-99AC-0025905A60B4.root'
+      ] );
 #readFiles.extend( [
 #       '/store/relval/CMSSW_7_1_0/RelValTTbar_13/GEN-SIM-RECO/PU25ns_POSTLS171_V15-v1/00000/12CAFE96-F9FE-E311-B68B-0025905964CC.root'
 #                  ] )
 
 
 process.source = source
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000))
 
 ### conditions
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
@@ -89,11 +92,11 @@ process.CASeedingStep = process.GlobalSeedsFromMultiplets.clone(
 )
 
 #import RecoTracker.CAtracker.BarrelPentuplets_cfi
-#import RecoTracker.CAtracker.CAPentuplets_cfi
-import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
+import RecoTracker.CAtracker.CAPentuplets_cfi
+#import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
 
-process.PentupletLayers = RecoTracker.CAtracker.CAPentupletsAllLay_cfi.CAPentupletsAL.clone()
-#process.PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsA.clone()
+process.PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsAllLay.clone()
+#process.PentupletLayers = RecoTracker.CAtracker.CAPentupletsAllLay_cfi.CAPentupletsAll.clone()
 
 process.CASeedingStep.OrderedHitsFactoryPSet.SeedingLayers = 'PentupletLayers'
 
@@ -101,7 +104,7 @@ process.CASeedingStep.OrderedHitsFactoryPSet.SeedingLayers = 'PentupletLayers'
 #val_EtaCut=float(sys.argv[2])
 #process.CASeedingStep.OrderedHitsFactoryPSet.EtaCut=cms.double(val_EtaCut)
 process.CASeedingStep.OrderedHitsFactoryPSet.EtaCut=cms.double(0.0256)
-process.CASeedingStep.OrderedHitsFactoryPSet.debug = cms.untracked.int32(1)
+process.CASeedingStep.OrderedHitsFactoryPSet.debug = cms.untracked.int32(2)
 process.CASeedingStep.OrderedHitsFactoryPSet.maketrees = cms.untracked.bool(True)
 
 process.evtInfo = cms.OutputModule("AsciiOutputModule")

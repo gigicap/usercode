@@ -33,6 +33,9 @@ cp ../../CAcode/src/RecoTracker/TkSeedingLayers/src/HitExtractorSTRP.cc RecoTrac
 echo 'Copying CA code'
 cp -r ../../CAcode/src/RecoTracker/CAtracker/ RecoTracker/CAtracker/
 
-echo 'building the code'
+echo 'Checking deps'
+git cms-checkdeps -a
+
+echo 'building the code (might take a while)'
 scram b
 echo 'done! To make a simple test go to  Validation/RecoTrack/test and run: cmsRun dummyTestLight_cfg.py'
