@@ -1,5 +1,5 @@
-#ifndef CAHitsGenerator_h
-#define CAHitsGenerator_h
+#ifndef CAHitsGeneratorForDebuggers_h
+#define CAHitsGeneratorForDebuggers_h
 
 // cmssw includes
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -116,16 +116,16 @@
 #include "CACell.h"
 
 //
-// CAHitsGenerator class declaration
+// CAHitsGeneratorForDebuggers class declaration
 //
 
 
-class CAHitsGenerator : public MultiHitGenerator {
+class CAHitsGeneratorForDebuggers : public MultiHitGenerator {
    public:
       using ConstRecHitPointer = BaseTrackerRecHit const *;
     
-      CAHitsGenerator(const edm::ParameterSet& ,  edm::ConsumesCollector& iC);
-      ~CAHitsGenerator();
+      CAHitsGeneratorForDebuggers(const edm::ParameterSet& ,  edm::ConsumesCollector& iC);
+      ~CAHitsGeneratorForDebuggers();
     
       void init(const edm::Event& ev, const edm::EventSetup& es);
       void hitSets(const TrackingRegion& , OrderedMultiHits& , const edm::Event& , const edm::EventSetup& );

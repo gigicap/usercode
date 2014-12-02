@@ -74,7 +74,7 @@ process.CASeedingStep.OrderedHitsFactoryPSet.SeedingLayers = 'PentupletLayers'
 #external input 
 val_EtaCut=float(sys.argv[2])
 process.CASeedingStep.OrderedHitsFactoryPSet.EtaCut=cms.double(val_EtaCut)
-val_Debug=int32(sys.argv[3])
+val_Debug=int(sys.argv[3])
 process.CASeedingStep.OrderedHitsFactoryPSet.debug = cms.untracked.int32(val_Debug)
 process.CASeedingStep.OrderedHitsFactoryPSet.maketrees = cms.untracked.bool(True)
 

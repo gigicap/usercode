@@ -81,7 +81,6 @@ void CAHitsGenerator::hitSets(const TrackingRegion& region, OrderedMultiHits & r
     
     //for time measurements (developer version)
     
-    auto t_total = std::chrono::system_clock::now();
     
     if(!initialised) init(iEvent,iSetup);
     
@@ -90,7 +89,6 @@ void CAHitsGenerator::hitSets(const TrackingRegion& region, OrderedMultiHits & r
     
     //to be changed
     scoll->reserve(10000);
-    auto t_triplets = std::chrono::system_clock::now();
     
     edm::Handle<SeedingLayerSetsHits> hlayers;
     iEvent.getByToken(theSeedingLayerToken, hlayers);
@@ -119,11 +117,6 @@ void CAHitsGenerator::hitSets(const TrackingRegion& region, OrderedMultiHits & r
     
     tripletCollection.reserve(scoll->size());
     fittedTripletCollection.reserve(scoll->size());
-    
-    auto t_triplets_end = std::chrono::system_clock::now();
-    auto t_tripletsE = std::chrono::duration_cast<std::chrono::microseconds>(t_triplets_end - t_triplets);
-    auto t_casetup = std::chrono::system_clock::now();
-    
     
     //Neighborhood map definition
     for (size_t is = 0; is<scoll->size(); is++) {
@@ -232,19 +225,14 @@ void CAHitsGenerator::hitSets(const TrackingRegion& region, OrderedMultiHits & r
         {
             SeedingHitSet multiset(multiHitPointer[4], multiHitPointer[3], multiHitPointer[2], multiHitPointer[1], multiHitPointer[0]);
             resultCA.push_back(multiset);
-            nSeeds++;
-            nSeeds5h++;
-            GlobalPoint p_last = multiHitPointer[0]->globalPosition();
-            double pl_eta = p_last.eta();
-        }
+   
+         }
         else 	if(multiHitPointer.size()==4)
         {
             SeedingHitSet multiset(multiHitPointer[3], multiHitPointer[2], multiHitPointer[1], multiHitPointer[0]);
             resultCA.push_back(multiset);
-            nSeeds++;
-            nSeeds4h++;
-            GlobalPoint p_last = multiHitPointer[0]->globalPosition();
-            double pl_eta = p_last.eta();
+           
+            
         }
         
     }

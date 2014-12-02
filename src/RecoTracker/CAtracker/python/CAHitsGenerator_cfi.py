@@ -16,7 +16,7 @@ CAHitsGeneratorForDebuggers = cms.PSet(
     Builder = cms.untracked.string('WithAngleAndTemplate'),
     EtaCut = cms.double(0.0256),
     maketrees = cms.untracked.bool(True),
-    MakeSecondBackward = cms.untracked.bool(True),
-    MakeFinalForward = cms.untracked.bool(True),
+    MakeSecondBackward = cms.bool(True),
+    MakeFinalForward = cms.bool(True),
     GeneratorPSet = cms.PSet(PixelTripletHLTGenerator)
 )
