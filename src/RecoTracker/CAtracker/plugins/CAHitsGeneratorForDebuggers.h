@@ -159,6 +159,63 @@ class CAHitsGenerator : public MultiHitGenerator {
 int max_status; //Now set to 10, in general to build n-tuplets set to > n-2
 
 
+//temp storage variables for debug tree 
+double tmp_FitChiSquared;
+int tmp_FitNdof;
+int tmp_event;
+int tmp_FitFoundHits;
+double tmp_LocalMomentum;
+double tmp_hqbp[3];
+double tmp_hdxdz[3];
+double tmp_hdydz[3];
+int tmp_hitid0;
+int tmp_hitid1;
+int tmp_hitid2;
+unsigned int tmp_rawid0;
+unsigned int tmp_rawid1;
+unsigned int tmp_rawid2;
+double tmp_dEta;
+int tmp_identifier;
+int tmp_neighborly;
+int tmp_CAstatus;
+int tmp_isused;
+
+int tmp_procTriplets;  
+int tmp_prodCells;
+int tmp_prodLay1Cells;
+int tmp_prodCells123;
+int tmp_prodCells123eta;
+int tmp_prodCells234;
+int tmp_prodCells345;
+
+int tmp_prodCells10121;
+int tmp_prodCells11312;
+int tmp_prodCells11531;
+int tmp_prodCells10343;
+int tmp_prodCells_10079;
+
+
+int tmp_neigCells; 
+double tmp_etaCValue;  
+int tmp_fitCells;  
+int tmp_nSteps;  
+int tmp_nSeeds; 
+int tmp_nSeeds5h; 
+int tmp_nSeeds4h; 
+
+//for time measurements 
+long int    tmp_t_total;
+long int    tmp_t_triplets;
+long int    tmp_t_casetup;
+long int    tmp_t_caforward;
+long int    tmp_t_cabackward;
+long int    tmp_t_cabackward4;
+long int    tmp_t_secondforward;
+long int    tmp_t_multprod;
+int invalidseqcounter; 
+
+std::vector<double> penteta;
+
    private:
     
         //Debug switch (set in the _cfi  ==0 no debud output, ==1 text output, ==2 text+debug tree, ==3 +time measurements)
@@ -199,7 +256,10 @@ int max_status; //Now set to 10, in general to build n-tuplets set to > n-2
     std::vector<std::vector<ConstRecHitPointer>>multiplets;
 	std::vector<int>final_multi_collection;		//store only the index
 
-  
+ 
+      	void fittreegenerator();
+        void fillfittree(CAcell *t);
+ 
     
         //data structure for the neighborhood maps
         std::unordered_map<unsigned int, std::list<CAcell *>> hitUsage;

@@ -92,6 +92,7 @@ public:
         TripletNumber = 0;
         CAstatus = 0;
         tripletIdentifier = 0;
+        multilabel = -1;
         }
 
     
@@ -121,5 +122,6 @@ int gethitId2(){return hitId2;}
     
 //CAstuff
     int CAstatus;
+    int multilabel;		//label for the finalforwardcleaner
         
 };

@@ -16,6 +16,6 @@
 <use name="TrackingTools/TrajectoryState"/>
 <use name="RecoPixelVertexing/PixelTriplets"/>
 <use name="TrackingTools/KalmanUpdators"/>
-<library   file="*.cc" name="CATrackerCATrackerPlugins">
+<library   file="*.cc" name="RecoTrackerTrackerCATrackerPlugins">
 <flags   EDM_PLUGIN="1"/>
 </library>

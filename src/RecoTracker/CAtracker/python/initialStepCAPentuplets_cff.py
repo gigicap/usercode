@@ -6,13 +6,8 @@ import FWCore.ParameterSet.Config as cms
 from RecoLocalTracker.SiPixelRecHits.PixelCPEESProducers_cff import *
 from RecoTracker.TransientTrackingRecHit.TTRHBuilders_cff import *
 
-#import triplet producer an cahitsgenerator
-#from RecoPixelVertexing.PixelTriplets.PixelTripletHLTGenerator_cfi import *
-#from RecoTracker.CAtracker.CAHitsGenerator_cfi import CAHitsGenerator as CellularAutomaton
 
 #import seeding layers
-#import RecoTracker.CAtracker.BarrelPentuplets_cfi
-#import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
 import RecoTracker.CAtracker.CAPentuplets_cfi
 PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsAllLay.clone()
 
@@ -31,25 +26,14 @@ RegionFactoryPSet = RegionPsetFomBeamSpotBlock.clone(
 )
 initialStepSeedsCA.OrderedHitsFactoryPSet.SeedingLayers = 'PentupletLayers'
 
-#from RecoPixelVertexing.PixelLowPtUtilities.ClusterHitFilterESProducer_cfi import *
-#import RecoPixelVertexing.PixelLowPtUtilities.LowPtClusterShapeSeedComparitor_cfi
-#initialStepSeedsCA.OrderedHitsFactoryPSet.GeneratorPSet.SeedComparitorPSet = RecoPixelVertexing.PixelLowPtUtilities.LowPtClusterShapeSeedComparitor_cfi.LowPtClusterShapeSeedComparitor   #?
-
 
 # building  
-#from TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff import CkfBaseTrajectoryFilter_block
-#import RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi
-#MeasurementTrackerEvent = RecoTracker.MeasurementDet.MeasurementTrackerEventProducer_cfi.MeasurementTrackerEvent.clone()
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 initialStepTrajectoryFilterCA = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     minimumNumberOfHits = 5, #???
     minPt = 0.2
 ) 
-#initialStepTrajectoryFilterCA = CkfBaseTrajectoryFilter_block.clone(
-#	minimumNumberOfHits = 5, #???
-#    minPt = 0.2
-#)
-  
+
 import TrackingTools.KalmanUpdators.Chi2ChargeMeasurementEstimatorESProducer_cfi
 initialStepChi2Est = TrackingTools.KalmanUpdators.Chi2ChargeMeasurementEstimatorESProducer_cfi.Chi2ChargeMeasurementEstimator.clone(
       ComponentName = cms.string('initialStepChi2Est'),
@@ -72,14 +56,6 @@ initialStepTrajectoryBuilderCA = RecoTracker.CkfPattern.GroupedCkfTrajectoryBuil
       maxPtForLooperReconstruction = cms.double(0.7)
 )
 
-#navigation school
-#from RecoTracker.TkNavigation.NavigationSchoolESProducer_cff import *
-#AnyDirectionAnalyticalPropagator = cms.ESProducer( "AnalyticalPropagatorESProducer",
-#  MaxDPhi = cms.double( 1.6 ),
-#  ComponentName = cms.string( "AnyDirectionAnalyticalPropagator" ),
-#  PropagationDirection = cms.string( "anyDirection" )
-#)
-
 import RecoTracker.CkfPattern.CkfTrackCandidates_cfi
 initialStepTrackCandidatesCA = RecoTracker.CkfPattern.CkfTrackCandidates_cfi.ckfTrackCandidates.clone(
      src = cms.InputTag('initialStepSeedsCA'),
@@ -94,18 +70,10 @@ initialStepTrackCandidatesCA = RecoTracker.CkfPattern.CkfTrackCandidates_cfi.ckf
  
 # fitting
 import RecoTracker.TrackProducer.TrackProducer_cfi
-#initialStepTracksCA = RecoTracker.TrackProducer.TrackProducer_cfi.TrackProducer.clone(
-#     src = 'initialStepTrackCandidatesCA',
-#     AlgorithmName = cms.string('iter0'),
-#     Fitter = cms.string('FlexibleKFFittingSmoother')
-#     )
-
-
 from TrackingTools.RecoGeometry.GlobalDetLayerGeometryESProducer_cfi import *
-
 from TrackingTools.TrackFitters.KFTrajectoryFitterESProducer_cfi import *
-#fitting stuff
-##### NB: What are the rightparameters? (these are from HLT_FULL_cff.py)
+
+##### NB: What are the rightparameters? (these are from HLT_FULL_cff.py) --> Get rid of many of these things
 RungeKuttaTrackerPropagator = cms.ESProducer( "PropagatorWithMaterialESProducer",
 	PropagationDirection = cms.string( "alongMomentum" ),
 	ComponentName = cms.string( "RungeKuttaTrackerPropagator" ),
@@ -129,7 +97,7 @@ CAStepFitterSmootherForLoopers = CAStepFitterSmoother.clone(
      Smoother = cms.string('CAStepRKSmootherForLoopers')
  )
  
-  # Also necessary to specify minimum number of hits after final track fit
+# Also necessary to specify minimum number of hits after final track fit
 CAStepRKTrajectoryFitter = TrackingTools.TrackFitters.RungeKuttaFitters_cff.RKTrajectoryFitter.clone(
     ComponentName = cms.string('CAStepRKFitter'),
     minHits = 8
@@ -220,7 +188,6 @@ initialStepCA = RecoTracker.FinalTrackSelectors.trackListMerger_cfi.trackListMer
  # Final sequence
 InitialStepCAPentuplets = cms.Sequence(PentupletLayers*
                                        initialStepSeedsCA*
-                                       #MeasurementTrackerEvent*
                                        initialStepTrackCandidatesCA*
                                        initialStepTracksCA*
                                        initialStepSelectorCA*

@@ -1,3 +1,4 @@
+//Bulk code by Thomas
 #pragma once
 
 #include "DataFormats/DetId/interface/DetId.h"
@@ -11,16 +12,10 @@
 #include <iostream>
 #include <vector>
 
-class DetIDClassification {
+class LayerClassification {
 
 public:
 
-/*	enum BarrelTypes {
-		PXB = 1, TIB = PXB + 3, TOB = TIB + 4, bUNKNOWN = TOB + 6
-	};
-	enum EndcapTypes {
-		PXF = 1, TID = PXF + 2, TEC = TID + 3, eUNKNOWN = TID + 9
-	};*/
 	enum BarrelTypes {
 		PXB = 1, TIB = PXB + 3, TOB = TIB + 4, bUNKNOWN = TOB + 6
 	};
@@ -29,9 +24,9 @@ public:
 	};
 
 
-	typedef std::vector<DetIDClassification> tLayers;
+	typedef std::vector<LayerClassification> tLayers;
 
-	DetIDClassification() {
+	LayerClassification() {
 		//set default
 		barrel = false;
 		barrelType = BarrelTypes::bUNKNOWN;
@@ -41,7 +36,7 @@ public:
 		stereo = false;
 	}
 
-	DetIDClassification(const DetId& detID) {
+	LayerClassification(const DetId& detID) {
 
 		//set default
 		barrel = false;
@@ -119,7 +114,7 @@ public:
 		}
 	}
 
-	DetIDClassification(bool iBarrel, int iLayerSigned) {
+	LayerClassification(bool iBarrel, int iLayerSigned) {
 		barrel = iBarrel;
 		layer = abs(iLayerSigned);
 		side = barrel ? 0 : (iLayerSigned < 0 ? -1 : 1);
@@ -128,7 +123,7 @@ public:
 		fillTypes();
 	}
 
-	DetIDClassification(bool iBarrel, int iLayerUNSigned, int iSide) {
+	LayerClassification(bool iBarrel, int iLayerUNSigned, int iSide) {
 		barrel = iBarrel;
 		layer = iLayerUNSigned;
 		side = barrel ? 0 : iSide;
@@ -174,15 +169,15 @@ public:
 	}
 
 	//comparison operators
-	inline bool operator==(const DetIDClassification& rhs) const {
+	inline bool operator==(const LayerClassification& rhs) const {
 		return (isBarrel() == rhs.isBarrel()) && (getLayer() == rhs.getLayer());
 	}
 
-	inline bool operator!=(const DetIDClassification& rhs) const {
+	inline bool operator!=(const LayerClassification& rhs) const {
 		return !operator==(rhs);
 	}
 
-	inline bool operator<(const DetIDClassification& rhs) const {
+	inline bool operator<(const LayerClassification& rhs) const {
 		if (isBarrel() == rhs.isBarrel()) {
 			if (getSide() == rhs.getSide())
 				return getLayerUnsigned() < rhs.getLayerUnsigned();
@@ -197,13 +192,13 @@ public:
 		}
 	}
 
-	inline bool operator>(const DetIDClassification& rhs) const {
+	inline bool operator>(const LayerClassification& rhs) const {
 		return !operator<(rhs) && !operator==(rhs);
 	}
-	inline bool operator<=(const DetIDClassification& rhs) const {
+	inline bool operator<=(const LayerClassification& rhs) const {
 		return !operator>(rhs);
 	}
-	inline bool operator>=(const DetIDClassification& rhs) const {
+	inline bool operator>=(const LayerClassification& rhs) const {
 		return !operator<(rhs);
 	}
 
@@ -213,14 +208,14 @@ public:
 		fillTypes();
 	}
 
-	DetIDClassification operator+(int n) const {
-		return DetIDClassification(barrel, layer + n, side);
+	LayerClassification operator+(int n) const {
+		return LayerClassification(barrel, layer + n, side);
 	}
 
 	tLayers getCompatible() const {
 		tLayers result;
 
-		DetIDClassification nextLayer = *this + 1;
+		LayerClassification nextLayer = *this + 1;
 		if ((nextLayer.isBarrel()
 				&& nextLayer.barrelType != BarrelTypes::bUNKNOWN)
 				|| (!nextLayer.isBarrel()
@@ -232,7 +227,7 @@ public:
 		return result;
 	}
 
-	bool isConsecutive(const DetIDClassification& o) const {
+	bool isConsecutive(const LayerClassification& o) const {
 
 		if (getSide() == o.getSide()) //both in either in barrel or forward or backward
 			return std::abs(getLayerUnsigned() - o.getLayerUnsigned()) <= 1; //only one layer difference
@@ -243,39 +238,39 @@ public:
 
 	}
 
-	static const std::vector<DetIDClassification> getBarrelLayers() {
-		std::vector<DetIDClassification> result;
+	static const std::vector<LayerClassification> getBarrelLayers() {
+		std::vector<LayerClassification> result;
 
-		for (DetIDClassification layer(true,
-				DetIDClassification::BarrelTypes::PXB);
+		for (LayerClassification layer(true,
+				LayerClassification::BarrelTypes::PXB);
 				layer.getLayerUnsigned()
-						< DetIDClassification::BarrelTypes::bUNKNOWN; ++layer) {
+						< LayerClassification::BarrelTypes::bUNKNOWN; ++layer) {
 			result.push_back(layer);
 		}
 
 		return result;
 	}
 
-	static const std::vector<DetIDClassification> getForwardLayers() {
-		std::vector<DetIDClassification> result;
+	static const std::vector<LayerClassification> getForwardLayers() {
+		std::vector<LayerClassification> result;
 
-		for (DetIDClassification layer(false,
-				DetIDClassification::EndcapTypes::PXF, +1);
+		for (LayerClassification layer(false,
+				LayerClassification::EndcapTypes::PXF, +1);
 				layer.getLayerUnsigned()
-						< DetIDClassification::EndcapTypes::eUNKNOWN; ++layer) {
+						< LayerClassification::EndcapTypes::eUNKNOWN; ++layer) {
 			result.push_back(layer);
 		}
 
 		return result;
 	}
 
-	static const std::vector<DetIDClassification> getBackwardLayers() {
-		std::vector<DetIDClassification> result;
+	static const std::vector<LayerClassification> getBackwardLayers() {
+		std::vector<LayerClassification> result;
 
-		for (DetIDClassification layer(false,
-				DetIDClassification::EndcapTypes::PXF, -1);
+		for (LayerClassification layer(false,
+				LayerClassification::EndcapTypes::PXF, -1);
 				layer.getLayerUnsigned()
-						< DetIDClassification::EndcapTypes::eUNKNOWN; ++layer) {
+						< LayerClassification::EndcapTypes::eUNKNOWN; ++layer) {
 			result.push_back(layer);
 		}
 
@@ -317,4 +312,4 @@ private:
 };
 
 //stream operator
-std::ostream& operator<<(std::ostream& s, const DetIDClassification& det);
+std::ostream& operator<<(std::ostream& s, const LayerClassification& det);

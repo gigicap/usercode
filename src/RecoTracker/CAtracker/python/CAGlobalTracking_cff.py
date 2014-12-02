@@ -3,8 +3,6 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Reconstruction_cff import * 
 from RecoTracker.CAtracker.initialStepCAPentuplets_cff import * 
-#from RecoTracker.CAtracker.initialStepCAMultiStep_cff import *
-
 
 #modify Detached to take CA as input
 

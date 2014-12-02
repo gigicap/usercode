@@ -1,5 +1,5 @@
 import FWCore.ParameterSet.Config as cms
-#import sys
+import sys
 
 process = cms.Process("CASEEDER")
 
@@ -15,33 +15,19 @@ readFiles = cms.untracked.vstring()
 
 source = cms.Source ("PoolSource",fileNames = readFiles)
 
-###TTbar
-
-###SingleMuPt1000
-#readFiles.extend( [
-#     '/store/relval/CMSSW_7_1_0/RelValSingleMuPt1000_UP15/GEN-SIM-RECO/POSTLS171_V15-v1/00000/F03572A3-B0FB-E311-BA24-0025905A6084.root' ] );
-###TTbar+PU
-
-#Local files
-#mupt100
-#readFiles.extend([ 'file:///afs/cern.ch/work/g/gigicap/TrakingPOG/2014/CMSSW_7_0_0_pre3_CellularAutomata/src/CAtracker/CAtracker/test/sampleFiles/SingleMuPt100_867A06F3-F098-E311-8118-003048FEB906.root'
-#			]);
-#ttbar
-#readFiles.extend([ 
-#'file:///afs/cern.ch/work/g/gigicap/TrakingPOG/2014/CMSSW_7_0_0_pre3_CellularAutomata/src/CAtracker/CAtracker/test/sampleFiles/TTbar13_6EA83C8D-C498-E311-B2A8-02163E00E993.root'
-#			]);
-			
-
+#SingleMuPt10
 readFiles.extend( [
-     '/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/42783A1F-1550-E411-B888-0025905B8582.root',
-'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/A233AB64-0C50-E411-A954-0025905A60A0.root',
-'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/C60B9C19-1550-E411-8517-002618FDA248.root',
-'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/DCA629A7-0C50-E411-9AC6-002618943849.root',
-'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/F20A822B-0B50-E411-99AC-0025905A60B4.root'
-      ] );
+    '/store/relval/CMSSW_7_2_0_pre8/RelValSingleMuPt10_UP15/GEN-SIM-RECO/PRE_LS172_V15-v1/00000/480204D4-5650-E411-9A8E-0026189438ED.root',
+    '/store/relval/CMSSW_7_2_0_pre8/RelValSingleMuPt10_UP15/GEN-SIM-RECO/PRE_LS172_V15-v1/00000/929F4678-5650-E411-9C6F-0025905B858C.root'] );
+
+#ttbar
 #readFiles.extend( [
-#       '/store/relval/CMSSW_7_1_0/RelValTTbar_13/GEN-SIM-RECO/PU25ns_POSTLS171_V15-v1/00000/12CAFE96-F9FE-E311-B68B-0025905964CC.root'
-#                  ] )
+#'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/42783A1F-1550-E411-B888-0025905B8582.root',
+#'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/A233AB64-0C50-E411-A954-0025905A60A0.root',
+#'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/C60B9C19-1550-E411-8517-002618FDA248.root',
+#'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/DCA629A7-0C50-E411-9AC6-002618943849.root',
+#'/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/F20A822B-0B50-E411-99AC-0025905A60B4.root'
+#      ] );
 
 
 process.source = source
@@ -49,7 +35,6 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000))
 
 ### conditions
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-#process.GlobalTag.globaltag = 'POSTLS172_V1::All'
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:startup', '')
 
@@ -58,9 +43,6 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:startup', '')
 
 process.load("RecoLocalTracker.SiPixelRecHits.PixelCPEESProducers_cff")
 process.load("RecoTracker.TransientTrackingRecHit.TTRHBuilders_cff")
-
-#from RecoLocalTracker.SiPixelRecHits.PixelCPEESProducers_cff import *
-#from RecoTracker.TransientTrackingRecHit.TTRHBuilders_cff import *
 
 #triplets otf
 process.load("RecoPixelVertexing.PixelTriplets.PixelTripletHLTGenerator_cfi")
@@ -72,15 +54,7 @@ process.load("RecoTracker.CAtracker.GlobalSeedsFromMultiplets_cff")
 #from RecoTracker.CAtracker.GlobalSeedsFromMultiplets_cff import *
 from RecoTracker.TkTrackingRegions.GlobalTrackingRegionFromBeamSpot_cfi import RegionPsetFomBeamSpotBlock
 
-#from RecoTracker.TkSeedGenerator.SeedGeneratorFromRegionHitsEDProducer_cfi import *
-#from RecoTracker.TkTrackingRegions.GlobalTrackingRegionFromBeamSpot_cfi import RegionPsetFomBeamSpotBlock
-
-#process.initialStepSeedsGigi = RecoTracker.CAtracker.GlobalSeedsFromMultiplets_cff.globalSeedsFromMultiplets.clone()
-
-
-
-#process.CASeedingStep = RecoTracker.CAtracker.GlobalSeedsFromMultiplets_cff.GlobalSeedsFromMultiplets.clone(
-process.CASeedingStep = process.GlobalSeedsFromMultiplets.clone(
+process.CASeedingStep = process.GlobalSeedsFromMultipletsForDebuggers.clone(
   RegionFactoryPSet = RegionPsetFomBeamSpotBlock.clone(
        ComponentName = cms.string('GlobalRegionProducerFromBeamSpot'),
        RegionPSet = RegionPsetFomBeamSpotBlock.RegionPSet.clone(
@@ -91,25 +65,23 @@ process.CASeedingStep = process.GlobalSeedsFromMultiplets.clone(
        )
 )
 
-#import RecoTracker.CAtracker.BarrelPentuplets_cfi
 import RecoTracker.CAtracker.CAPentuplets_cfi
-#import RecoTracker.CAtracker.CAPentupletsAllLay_cfi
 
 process.PentupletLayers = RecoTracker.CAtracker.CAPentuplets_cfi.CAPentupletsAllLay.clone()
-#process.PentupletLayers = RecoTracker.CAtracker.CAPentupletsAllLay_cfi.CAPentupletsAll.clone()
 
 process.CASeedingStep.OrderedHitsFactoryPSet.SeedingLayers = 'PentupletLayers'
 
 #external input 
-#val_EtaCut=float(sys.argv[2])
-#process.CASeedingStep.OrderedHitsFactoryPSet.EtaCut=cms.double(val_EtaCut)
-process.CASeedingStep.OrderedHitsFactoryPSet.EtaCut=cms.double(0.0256)
-process.CASeedingStep.OrderedHitsFactoryPSet.debug = cms.untracked.int32(2)
+val_EtaCut=float(sys.argv[2])
+process.CASeedingStep.OrderedHitsFactoryPSet.EtaCut=cms.double(val_EtaCut)
+val_Debug=int32(sys.argv[3])
+process.CASeedingStep.OrderedHitsFactoryPSet.debug = cms.untracked.int32(val_Debug)
 process.CASeedingStep.OrderedHitsFactoryPSet.maketrees = cms.untracked.bool(True)
 
 process.evtInfo = cms.OutputModule("AsciiOutputModule")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string("histotrip.root") )
+val_OutName=sys.argv[4]
+process.TFileService = cms.Service("TFileService", fileName = cms.string(val_OutName) )
 
 process.s = cms.Sequence(process.siPixelRecHits*process.siStripMatchedRecHits*process.siPixelClusterShapeCache*process.PentupletLayers*process.CASeedingStep)
 process.p = cms.Path(process.s)

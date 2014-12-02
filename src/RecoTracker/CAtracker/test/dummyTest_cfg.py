@@ -8,18 +8,13 @@ process.load("Configuration.StandardSequences.Services_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.Geometry_cff") 
 #process.load("Configuration.StandardSequences.Reconstruction_cff")
-#process.load("RecoTracker.CAtracker.CAGlobalTracking_cff")
-process.load("RecoTracker.CAtracker.CAGlobalTracking00_cff")
+process.load("RecoTracker.CAtracker.CAGlobalTracking_cff")
 
 
 # source
 readFiles = cms.untracked.vstring()
 
 source = cms.Source ("PoolSource",fileNames = readFiles)
-
-###SingleMuPt1000
-#readFiles.extend([ 'file:///afs/cern.ch/work/g/gigicap/TrakingPOG/2014/CMSSW_7_0_0_pre3_CellularAutomata/src/CAtracker/CAtracker/test/sampleFiles/SingleMuPt100_867A06F3-F098-E311-8118-003048FEB906.root'
-#			]);
 
 #ttbar
 readFiles.extend( [
@@ -29,18 +24,13 @@ readFiles.extend( [
 '/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/DCA629A7-0C50-E411-9AC6-002618943849.root',
 '/store/relval/CMSSW_7_2_0_pre8/RelValTTbar_13/GEN-SIM-RECO/PU25ns_PRE_LS172_V15-v1/00000/F20A822B-0B50-E411-99AC-0025905A60B4.root'
       ] );
-#readFiles.extend( [
-#       '/store/relval/CMSSW_7_1_0/RelValTTbar_13/GEN-SIM-RECO/PU25ns_POSTLS171_V15-v1/00000/12CAFE96-F9FE-E311-B68B-0025905964CC.root'
-#                  ] )
-
 
 
 process.source = source
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000))
 
 ### conditions
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-#process.GlobalTag.globaltag = 'POSTLS171_V15::All'
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:startup', '')
 
