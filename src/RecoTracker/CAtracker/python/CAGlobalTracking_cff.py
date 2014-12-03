@@ -12,6 +12,32 @@ detachedTripletStepClusters.overrideTrkQuals = cms.InputTag('initialStepCA')
 detachedTripletStepClusters.pixelClusters = cms.InputTag('siPixelClusters')
 detachedTripletStepClusters.stripClusters = cms.InputTag('siStripClusters')
 
+#correct vertex collection
+detachedTripletStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+lowPtTripletStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+pixelPairStepSeeds.RegionFactoryPSet.RegionPSet.VertexCollection = cms.InputTag("firstStepPrimaryVerticesCA")
+pixelPairStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+mixedTripletStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+pixelLessStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+tobTecStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+ak4CaloJetsForTrk.srcPVs = cms.InputTag('firstStepPrimaryVerticesCA')
+firstStepGoodPrimaryVertices.src=cms.InputTag('firstStepPrimaryVerticesCA')
+jetCoreRegionalStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+muonSeededTracksInOutSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+muonSeededTracksOutInSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+duplicateTrackSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+
+convStepSelector.vertices    = cms.InputTag("firstStepPrimaryVerticesCA")
+photonConvTrajSeedFromSingleLeg.primaryVerticesTag = cms.InputTag('firstStepPrimaryVerticesCA')
+
+pixelPairElectronSeeds.RegionFactoryPSet.RegionPSet.VertexCollection = cms.InputTag("firstStepPrimaryVerticesCA")
 
 #early general tracks requires to be updated in order to include InitialStepCAPentuplets
 #earlyGeneralTracksCA = RecoTracker.FinalTrackSelectors.earlyGeneralTracks_cfi.earlyGeneralTracks.clone()
@@ -37,8 +63,7 @@ earlyGeneralTracks.selectedTrackQuals = cms.VInputTag(cms.InputTag("initialStepC
                      
                     
 #for the jetcoreregionalstep
-
-iter0TrackRefsForJets = cms.InputTag('initialStepTracksCA')
+initialStepTrackRefsForJets.src = cms.InputTag('initialStepTracksCA')
 
 #use CAtracking as Initialstep
 iterTrackingCA = cms.Sequence(
@@ -49,7 +74,7 @@ iterTrackingCA = cms.Sequence(
                              MixedTripletStep*
                              PixelLessStep*
                              TobTecStep*
-                 	         #JetCoreRegionalStep*   
+                 	         JetCoreRegionalStep*
                              earlyGeneralTracks*
                              muonSeededStep*
                              preDuplicateMergingGeneralTracks*
