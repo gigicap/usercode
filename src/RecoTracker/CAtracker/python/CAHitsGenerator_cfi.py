@@ -11,6 +11,15 @@ CAHitsGenerator = cms.PSet(
     GeneratorPSet = cms.PSet(PixelTripletHLTGenerator)
 )
 
+CAGeneratorFromPairs = cms.PSet(
+    debug = cms.untracked.int32(0),
+    Builder = cms.untracked.string('WithAngleAndTemplate'),
+    EtaCut = cms.double(0.0256),
+    MakeSecondBackward = cms.untracked.bool(True),
+    MakeFinalForward = cms.untracked.bool(True)
+)
+
+
 CAHitsGeneratorForDebuggers = cms.PSet(
     debug = cms.untracked.int32(1),
     Builder = cms.untracked.string('WithAngleAndTemplate'),
