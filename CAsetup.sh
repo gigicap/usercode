@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'this script works for CMSSW_7_2_0_pre8' 
+echo 'this script works for CMSSW_7_4_0_pre1' 
 
 cmsenv
 #these lines will be removed in the final script
